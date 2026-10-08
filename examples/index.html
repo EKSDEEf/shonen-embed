@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Shonen Embed — working example</title>
+  <link rel="stylesheet" href="example.css">
+  <script src="example.js" defer></script>
+</head>
+<body>
+  <main>
+    <header><a href="https://shonen.to/embed-info">shonen<span>.to</span> embed</a><h1>One iframe. Your website.</h1><p>No signup, no API key, no player installation. Serve this page over HTTPS or localhost HTTP.</p></header>
+    <section>
+      <h2>Configure your embed</h2>
+      <form id="builder" onsubmit="return false">
+        <div class="fields">
+          <label>AniList ID<input name="animeId" type="number" min="1" max="2147483647" value="21" required></label>
+          <label>Episode<input name="episode" type="number" min="1" max="100000" value="1" required></label>
+          <label>Audio<select name="language"><option value="sub">Sub</option><option value="dub">Dub</option></select></label>
+          <label>Start (seconds)<input name="start" type="number" min="0" max="604800" value="0" required></label>
+          <label>Captions<select name="captions"><option value="en">English when available</option><option value="off">Off</option></select></label>
+          <label>Accent<input name="accent" type="color" value="#8e7bff"></label>
+        </div>
+        <label>Parent origin<input name="parentOrigin" type="url" required></label>
+        <p>You can generate code for another website, but loading here requires the origin to match this page.</p>
+        <div class="checks"><label><input name="autoplay" type="checkbox">Attempt autoplay</label><label><input name="muted" type="checkbox" checked>Start muted</label></div>
+        <div class="actions"><button id="generate" type="button">Generate code</button><button id="load" type="button">Load embed</button><button id="unload" type="button">Remove player</button></div>
+      </form>
+      <p id="status" role="status" aria-live="polite">Nothing loads or plays automatically. The default configuration is muted, autoplay off.</p>
+      <label>Embed code<textarea id="code" rows="9" readonly></textarea></label>
+      <button id="copy" type="button">Copy code</button>
+    </section>
+    <section><h2>Player</h2><div id="player"><p>Click Load embed when you're ready.</p></div><p>Use Play inside the iframe if browser autoplay policy blocks a remote command.</p></section>
+    <section><h2>Commands</h2><div id="commands" class="actions">
+      <button type="button" data-command="play" disabled>Play</button><button type="button" data-command="pause" disabled>Pause</button>
+      <button type="button" data-command="setMuted" data-value="true" disabled>Mute</button><button type="button" data-command="setMuted" data-value="false" disabled>Unmute</button>
+      <button type="button" data-command="setCaptions" data-value="en" disabled>English captions</button><button type="button" data-command="setCaptions" data-value="off" disabled>Captions off</button>
+      <label>Seek seconds<input id="seek" type="number" min="0" value="120"></label><button type="button" data-command="seek" disabled>Seek</button>
+      <label>Volume (0–1)<input id="volume" type="number" min="0" max="1" step="0.1" value="0.5"></label><button type="button" data-command="setVolume" disabled>Set volume</button>
+    </div></section>
+    <section><h2>Verified player events</h2><p>Only messages from https://shonen.to and the active iframe window are accepted. Latest 50 messages.</p><pre id="events" aria-label="Player event log"></pre><button id="clear" type="button">Clear log</button></section>
+    <footer>Primary → Secondary recovery when available. Captions and Dub coverage vary. Domains may be blocked by Shonen. Use content only with the necessary permissions. <a href="../docs/TROUBLESHOOTING.md">Troubleshooting</a></footer>
+  </main>
+</body>
+</html>

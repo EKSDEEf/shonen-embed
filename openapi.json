@@ -1,0 +1,176 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "Shonen Public Embed",
+        "version": "1.0.0",
+        "description": "Public iframe integration. No API key. Direct upstream streaming, internal source recovery only. Playback events and commands are documented at /embed-info. Internal session endpoints are not a raw-source partner API."
+    },
+    "servers": [
+        {
+            "url": "https://shonen.to"
+        }
+    ],
+    "paths": {
+        "/embed/anilist/{id}/{episode}": {
+            "get": {
+                "operationId": "embedPlayer",
+                "summary": "Embed the Shonen player",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "AniList anime ID, not MAL.",
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 2147483647
+                        }
+                    },
+                    {
+                        "name": "episode",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 100000
+                        }
+                    },
+                    {
+                        "name": "parentOrigin",
+                        "in": "query",
+                        "description": "Exact parent HTTPS origin. Required if no referrer is sent. localhost HTTP supported.",
+                        "schema": {
+                            "type": "string",
+                            "format": "uri"
+                        }
+                    },
+                    {
+                        "name": "language",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "sub",
+                                "dub"
+                            ],
+                            "default": "sub"
+                        }
+                    },
+                    {
+                        "name": "autoplay",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "0",
+                                "1",
+                                "true",
+                                "false"
+                            ],
+                            "default": "0"
+                        }
+                    },
+                    {
+                        "name": "muted",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "0",
+                                "1",
+                                "true",
+                                "false"
+                            ],
+                            "default": "0"
+                        }
+                    },
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 604800,
+                            "default": 0
+                        }
+                    },
+                    {
+                        "name": "captions",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "en",
+                                "off"
+                            ],
+                            "default": "en"
+                        }
+                    },
+                    {
+                        "name": "accent",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^[a-fA-F0-9]{6}$",
+                            "default": "8e7bff"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Player HTML. Playback availability is resolved after load.",
+                        "content": {
+                            "text/html": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid options or missing parent origin",
+                        "content": {
+                            "text/html": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Origin mismatch or domain blocked",
+                        "content": {
+                            "text/html": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "429": {
+                        "description": "Rate limited; Retry-After is returned",
+                        "content": {
+                            "text/html": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "503": {
+                        "description": "Embeds disabled or unavailable",
+                        "content": {
+                            "text/html": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
